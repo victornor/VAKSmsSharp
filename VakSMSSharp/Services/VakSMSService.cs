@@ -8,8 +8,13 @@ namespace VakSMSSharp.Services;
 
 public class VakSMSService : BaseApiService, IVakSmsService
 {
-    public VakSMSService(string apiKey) : base(apiKey)
+    public VakSMSService(HttpClient httpClient) : base(httpClient)
     {
+    }
+
+    public void SetApiToken(string token)
+    {
+        _apiKey = token;
     }
 
     public async Task<float> GetBalanceAsync()
@@ -23,7 +28,7 @@ public class VakSMSService : BaseApiService, IVakSmsService
         var countryCode = CountryLookupUtility.GetCountryAPICode(country);
         var serviceCode = ServiceLookupUtility.GetServiceAPICode(service);
         
-        var response = await ExecuteRequestAsync<Phone>($"https://vak-sms.com/api/getNumber?country={countryCode}&service={serviceCode}", HttpMethod.Get);
+        var response = await ExecuteRequestAsync<Phone>($"https://vak-sms.com/api/getNumber/?country={countryCode}&service={serviceCode}", HttpMethod.Get);
         return response;
     }
 
@@ -31,7 +36,7 @@ public class VakSMSService : BaseApiService, IVakSmsService
     {
         var response =
             await ExecuteRequestAsync<StatusResponse>(
-                $"https://vak-sms.com/api/setStatus?number={phone.Number}&status={status}&idNum={phone.Id}", HttpMethod.Get);
+                $"https://vak-sms.com/api/setStatus/?number={phone.Number}&status={status}&idNum={phone.Id}", HttpMethod.Get);
         
         return response.Status;
     }
@@ -40,7 +45,7 @@ public class VakSMSService : BaseApiService, IVakSmsService
     {
         var response =
             await ExecuteRequestAsync<GetSmsResponse>(
-                $"https://vak-sms.com/api/getSmsCode?idNum={phone.Id}", HttpMethod.Get);
+                $"https://vak-sms.com/api/getSmsCode/?idNum={phone.Id}", HttpMethod.Get);
 
         return response.SmsCode;
     }

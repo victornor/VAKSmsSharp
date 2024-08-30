@@ -5,6 +5,7 @@ namespace VakSMSSharp.Abstractions;
 
 public interface IVakSmsService
 {
+    void SetApiToken(string token);
     Task<float> GetBalanceAsync();
     Task<Phone> GetPhoneAsync(PhoneCountry country, PhoneService service);
     Task<PhoneStatus> SetStatusAsync(Phone phone, PhoneUpdateStatus status);
