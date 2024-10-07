@@ -7,4 +7,6 @@ public class Phone
 {
     [JsonProperty("id")] public string Id { get; set; }
     [JsonProperty("tel")] public string Number { get; set; }
+    
+    public DateTime LeasedAt { get; set; } = DateTime.Now;
 }
